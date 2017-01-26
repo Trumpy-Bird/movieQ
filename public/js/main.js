@@ -28,8 +28,6 @@ $.ajax({
     type: 'GET',
     data: 'sort_by=popularity.desc&' + movieApiKey, // or $('#myform').serializeArray()
     success: function (data) {
-        // console.log(data); 
-        //FUNCTION 
         processPopularMovies(data);
     }
 });
@@ -39,7 +37,6 @@ function processPopularMovies(data) {
     // Returns 20 popular movies
     var movies = data.results;
     for (i = 0; i < movies.length; i++) {
-        // console.log(movies[i]);
         // Make panel then add to grid
         $('#movieList').append(makePanel(movies[i]));
     }
@@ -60,7 +57,7 @@ function makePanel(movie) {
     if (trimmedString.length < movie.overview.length) trimmedString += "...";
     $('#movieList').text = '';
     var panel = '<div class="col-sm-4">' +
-        '<div class="panel panel-success">' +
+        '<div class="panel panel-primary">' +
         ' <div class="panel-heading">' + movie.title + '</div>' +
         '<div class="panel-body">' +
         '<img src="' + getImage(movie) + '" class="img-responsive" style="width:100%" alt="Image"></div>' +
@@ -79,6 +76,7 @@ but I wrote them separately just in case they need to be different*/
 // var prefix = document.getElementById("prefix");
 $('#prefix').keyup(function (data) {
     // console.log(data.key);
+    $('#searchJumbo').removeClass('searchJumbo');
     $('#searchResultList').children().remove();
     console.log($('#prefix').val());
     searchMovies();
@@ -101,22 +99,11 @@ function searchMovies() {
 function processSearchMovies(data) {
     var movies = data.results;
     console.log(movies);
-    for (i = 0; i < movies.length; i++) {
-        $('#searchResultList').append(makeSearchPanel(movies[i]));
+    // $('#movieList').children().remove();
+    // $('#searchResultList').children().remove();
+    var num = movies.length > 10 ? 10 : movies.length;
+    for (i = 0; i < num; i++) {
+        $('#searchResultList').append(makePanel(movies[i]));
     }
 }
 
-function makeSearchPanel(movie) {
-    var trimmedString = movie.overview.substring(0, 140);
-    if (trimmedString.length < movie.overview.length) trimmedString += "...";
-    $('#searchResultList').text = '';
-    var panel = '<div class="col-sm-4">' +
-        '<div class="panel panel-success">' +
-        ' <div class="panel-heading">' + movie.title + '</div>' +
-        '<div class="panel-body">' +
-        '<img src="' + getImage(movie) + '" class="img-responsive" style="width:100%" alt="Image"></div>' +
-        '<div class="panel-footer">' + trimmedString + '</div>' +
-        '</div></div>';
-    console.log(baseUrl + "movie?" + movie.poster_path + and + movieApiKey);
-    return panel;
-}
