@@ -38,7 +38,8 @@ function processPopularMovies(data) {
     var movies = data.results;
     for (i = 0; i < movies.length; i++) {
         // Make panel then add to grid
-        $('#movieList').append(makePanel(movies[i]));
+        if (movies[i].poster_path != null)
+            $('#movieList').append(makePanel(movies[i]));
     }
 }
 
@@ -103,7 +104,16 @@ function processSearchMovies(data) {
     // $('#searchResultList').children().remove();
     var num = movies.length > 10 ? 10 : movies.length;
     for (i = 0; i < num; i++) {
-        $('#searchResultList').append(makePanel(movies[i]));
+        if (movies[i].poster_path != null)
+            $('#searchResultList').append(makePanel(movies[i]));
     }
+    matchHeight()
 }
 
+function matchHeight() {
+    $('.equal-height-panels .panel').matchHeight();
+}
+$(document).ready(function () {
+    matchHeight()
+
+});
