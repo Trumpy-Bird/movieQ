@@ -38,9 +38,12 @@ function processPopularMovies(data) {
     var movies = data.results;
     for (i = 0; i < movies.length; i++) {
         // Make panel then add to grid
-        if (movies[i].poster_path != null)
-            $('#movieList').append(makePanel(movies[i]));
+        if (movies[i].poster_path != null) {
+            var m = $('#movieList').append(makePanel(movies[i]));
+            // $('#movieList').children().last().click(addListener(m));
+        }
     }
+    addListener();
 }
 
 function getImage(data) {
@@ -57,7 +60,7 @@ function makePanel(movie) {
     var trimmedString = movie.overview.substring(0, 140);
     if (trimmedString.length < movie.overview.length) trimmedString += "...";
     $('#movieList').text = '';
-    var panel = '<div class="col-sm-4">' +
+    var panel = '<div class="col-sm-4 movie">' +
         '<div class="panel panel-primary">' +
         ' <div class="panel-heading">' + movie.title + '</div>' +
         '<div class="panel-body">' +
@@ -65,6 +68,7 @@ function makePanel(movie) {
         '<div class="panel-footer">' + trimmedString + '</div>' +
         '</div></div>';
     // console.log(baseUrl + "movie?" + movie.poster_path + and + movieApiKey);
+
     return panel;
 }
 
@@ -107,13 +111,32 @@ function processSearchMovies(data) {
         if (movies[i].poster_path != null)
             $('#searchResultList').append(makePanel(movies[i]));
     }
-    matchHeight()
+    addListener();
+    // matchHeight();
 }
 
-function matchHeight() {
-    $('.equal-height-panels .panel').matchHeight();
-}
 $(document).ready(function () {
-    matchHeight()
+    // matchHeight()
 
 });
+function doSomething() {
+    console.log("clicked");
+    $('.panel-primary').click(function (data) {
+        console.log(data.target.innerHTML);
+        // add to list
+        $('#watchList').append(addMovieToList(data.target.innerHTML));
+    })
+}
+
+function addListener(data) {
+    console.log(data);
+    $('.panel-primary').off('click', doSomething());
+    $('.panel-primary').on('click', doSomething());
+
+}
+
+function addMovieToList(name) {
+    return '<li>' + name + "</li>";
+
+}
+
