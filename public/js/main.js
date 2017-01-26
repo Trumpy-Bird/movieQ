@@ -19,7 +19,7 @@ $.ajax({
     url: 'https://api.themoviedb.org/3/movie/550',
     type: 'GET',
     data: 'api_key=9f7c638352a37a88f16032189ac08772', // or $('#myform').serializeArray()
-    success: function (data) { /*console.log(data);*/ } 
+    success: function (data) { /*console.log(data);*/ }
 });
 
 //So in this one we're getting all the favorite movies.
@@ -44,7 +44,16 @@ function processPopularMovies(data) {
         $('#movieList').append(makePanel(movies[i]));
     }
 }
- 
+
+function getImage(data) {
+    if (data.poster_path == null) {
+        return "";
+    }
+    else {
+        return imageUrl + data.poster_path;
+    }
+}
+
 function makePanel(movie) {
     // Take information here and convert into an html object
     var trimmedString = movie.overview.substring(0, 140);
@@ -54,10 +63,10 @@ function makePanel(movie) {
         '<div class="panel panel-success">' +
         ' <div class="panel-heading">' + movie.title + '</div>' +
         '<div class="panel-body">' +
-        '<img src="' + imageUrl + movie.poster_path + '" class="img-responsive" style="width:100%" alt="Image"></div>' +
+        '<img src="' + getImage(movie) + '" class="img-responsive" style="width:100%" alt="Image"></div>' +
         '<div class="panel-footer">' + trimmedString + '</div>' +
         '</div></div>';
-    console.log(baseUrl + "movie?" + movie.poster_path + and + movieApiKey);
+    // console.log(baseUrl + "movie?" + movie.poster_path + and + movieApiKey);
     return panel;
 }
 
@@ -67,24 +76,31 @@ but I wrote them separately just in case they need to be different*/
 
 //SEARCH BAR RESULTS
 
-var prefix = document.getElementById("prefix");
-var thePrefix = prefix.value.toLowerCase();
-var thePrefixPlus = thePrefix.replace(/ /, '+');
-prefix.addEventListener();
+// var prefix = document.getElementById("prefix");
+$('#prefix').keyup(function (data) {
+    // console.log(data.key);
+    $('#searchResultList').children().remove();
+    console.log($('#prefix').val());
+    searchMovies();
+});
+// prefix.addEventListener("keyup", searchMovies());
 
 //get Search results
 //https://api.themoviedb.org/3/search/movie?api_key=9f7c638352a37a88f16032189ac08772&query=la+la+land
-$.ajax({
-    url: baseUrl + 'search/movie?', 
-    type: 'GET',
-    data: movieApiKey + and + 'query=' + thePrefixPlus, // or $('#myform').serializeArray()
-    success: function (data) {
-        processSearchMovies(data);
-    }
-});
+function searchMovies() {
+    $.ajax({
+        url: baseUrl + 'search/movie?',
+        type: 'GET',
+        data: movieApiKey + and + 'query=' + $('#prefix').val(), // or $('#myform').serializeArray()
+        success: function (data) {
+            processSearchMovies(data);
+        }
+    });
+}
 
 function processSearchMovies(data) {
     var movies = data.results;
+    console.log(movies);
     for (i = 0; i < movies.length; i++) {
         $('#searchResultList').append(makeSearchPanel(movies[i]));
     }
@@ -98,7 +114,7 @@ function makeSearchPanel(movie) {
         '<div class="panel panel-success">' +
         ' <div class="panel-heading">' + movie.title + '</div>' +
         '<div class="panel-body">' +
-        '<img src="' + imageUrl + movie.poster_path + '" class="img-responsive" style="width:100%" alt="Image"></div>' +
+        '<img src="' + getImage(movie) + '" class="img-responsive" style="width:100%" alt="Image"></div>' +
         '<div class="panel-footer">' + trimmedString + '</div>' +
         '</div></div>';
     console.log(baseUrl + "movie?" + movie.poster_path + and + movieApiKey);
