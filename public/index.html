@@ -6,6 +6,48 @@
   <title>Welcome to Firebase Hosting</title>
   <link rel=stylesheet type="text/css" href="css/main.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://cdn.firebase.com/libs/firebaseui/1.0.1/firebaseui.js"></script>
+  <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/1.0.1/firebaseui.css" />
+  <!-- Firebase -->
+  <script src="https://cdn.firebase.com/js/client/1.0.21/firebase.js"></script>
+  <!-- Firebase Simple Login -->
+  <script src="https://cdn.firebase.com/js/simple-login/1.6.4/firebase-simple-login.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/3.7.6/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/3.7.6/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/3.7.8/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyB8IWqUnT6A5vzhrGOm56wUNMZvNBNjEIs",
+      authDomain: "movieq-d9325.firebaseapp.com",
+      databaseURL: "https://movieq-d9325.firebaseio.com",
+      projectId: "movieq-d9325",
+      storageBucket: "movieq-d9325.appspot.com",
+      messagingSenderId: "139642987985"
+    };
+    firebase.initializeApp(config);
+
+    var firebaseRef = new Firebase(config.databaseURL);
+    var auth = new FirebaseSimpleLogin(firebaseRef, function (error, user) {
+      if (error) {
+        // an error occurred while attempting login
+        console.log(error);
+      } else if (user) {
+        // user authenticated with Firebase
+        console.log('User ID: ' + user.id + ', Provider: ' + user.provider);
+
+        // Log out so we can log in again with a different provider.
+        // auth.logout();
+      } else {
+        // user is logged out
+      }
+    });
+    function login(provider) {
+      console.log("Login with " + provider);
+      auth.login(provider);
+    }
+  </script>
 </head>
 
 <body>
@@ -34,64 +76,65 @@
           <li><a href="#">Deals</a></li>
           <li><a href="#">Stores</a></li> -->
           <li><a href="contact.html">Contact</a></li>
-          <li><a href="#"><input style="color: #000000" placeholder = "Search..." id='prefix'></a>
-</li>
-</ul>
+          <li>
+            <a href="#"><input style="color: #000000" placeholder="Search..." id='prefix'></a>
+          </li>
+        </ul>
 
-<ul class="nav navbar-nav navbar-right">
-  <li><a href="#"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
-  <li><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
-</ul>
-</div>
-</div>
-</nav>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="javascript:login('google');"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
+          <li><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 
-<div class="container">
-  <p>Please click on the title bar of the panels to add to your list of movies to watch</p>
-  <h3>Movies to Watch:</h3>
-  <ul id=watchList>
-    <!--<h1>Popular Movies</h1>-->
-  </ul>
-</div>
-<div id=searchJumbo class=searchJumbo>
-  <div class="container ">
-    <div class="jumbotron">
-      <h3>Results</h3>
-      <!--<p>Here are the 20 most popular movies, check 'em out.</p> -->
+  <div class="container">
+    <p>Please click on the title bar of the panels to add to your list of movies to watch</p>
+    <h3>Movies to Watch:</h3>
+    <ul id=watchList>
+      <!--<h1>Popular Movies</h1>-->
+    </ul>
+  </div>
+  <div id=searchJumbo class=searchJumbo>
+    <div class="container ">
+      <div class="jumbotron">
+        <h3>Results</h3>
+        <!--<p>Here are the 20 most popular movies, check 'em out.</p> -->
+      </div>
     </div>
   </div>
-</div>
 
-<div class="container">
-  <div id=searchResultList class="row equal-height-panels">
+  <div class="container">
+    <div id=searchResultList class="row equal-height-panels">
+    </div>
+  </div><br>
+
+  <div class="container">
+    <div class="jumbotron">
+      <h3>Recommended for You</h3>
+      <p>Here are the 20 most popular movies, check 'em out.</p>
+    </div>
   </div>
-</div><br>
 
-<div class="container">
-  <div class="jumbotron">
-    <h3>Recommended for You</h3>
-    <p>Here are the 20 most popular movies, check 'em out.</p>
-  </div>
-</div>
+  <div class="container">
+    <div id=movieList class="row equal-height-panels">
+    </div>
+  </div><br>
 
-<div class="container">
-  <div id=movieList class="row equal-height-panels">
-  </div>
-</div><br>
+  <br><br>
 
-<br><br>
-
-<footer class="container-fluid text-center">
-  <p>Online Store Copyright</p>
-  <form class="form-inline">Get deals:
-    <input type="email" class="form-control" size="50" placeholder="Email Address">
-    <button type="button" class="btn btn-danger">Sign Up</button>
-  </form>
-</footer>
-<script src="https://www.gstatic.com/firebasejs/3.6.7/firebase.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="js/main.js"></script>
+  <footer class="container-fluid text-center">
+    <p>Online Store Copyright</p>
+    <form class="form-inline">Get deals:
+      <input type="email" class="form-control" size="50" placeholder="Email Address">
+      <button type="button" class="btn btn-danger">Sign Up</button>
+    </form>
+  </footer>
+  <script src="https://www.gstatic.com/firebasejs/3.6.7/firebase.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="js/main.js"></script>
 
 </body>
 
